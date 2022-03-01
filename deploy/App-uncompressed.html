@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RallyGridBasic</title>
+
+    <script type="text/javascript" src="/apps/2.1/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function () {
+                Ext.define('CustomApp', {
+    extend: 'Rally.app.App',
+    componentCls: 'app',
+	
+	launch: function() {
+		console.log("Hola cara de bola");
+		this._loadData();
+	},
+	//GEt data form Rally
+	_loadData: function(){
+		console.log("Hola cara de bola");
+		var  myStore = Ext.create('Rally.data.wsapi.Store', {
+		model: 'User Story',
+		autoLoad: true,
+		listeners: {
+			load: function(myStore, myData, success) {
+			console.log("Got Data: ", myStore,myData, success) ;
+			this._loadGrid (myStore);
+				
+		  },
+		  scope:this
+		},
+		fetch: ['FormattedId', 'Name', 'ScheduleState']
+		});	
+      
+	},
+	// Create adn show Grid fo store
+	_loadGrid: function(myStoryStore) {
+		var myGrid = Ext.create('Rally.ui.grid.Grid', {
+			store: myStoryStore,
+			columnCfgs: ['FormattedID','Name','ScheduleState']
+		});
+		console.log('myGrid', myGrid);
+		this.add(myGrid);
+		console.log('What is this: ', this);
+	},
+	
+});
+
+            Rally.launchApp('CustomApp', {
+                name:"RallyGridBasic",
+                parentRepos:"",
+                version:"0.1.1"
+            });
+
+        });
+    </script>
+
+
+
+    <style type="text/css">
+        .app {
+  /* Add app styles here */
+}
+
+    </style>
+</head>
+<body>
+</body>
+</html>
